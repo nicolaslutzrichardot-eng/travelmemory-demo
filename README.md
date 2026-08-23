@@ -98,3 +98,38 @@ Nouvelle page d’accueil premium, identité suisse renforcée et communication 
 - La source du lieu et les coordonnées sont visibles dans le voyage détecté.
 - Si Safari/Chrome ne transmet pas le GPS, l'interface l'indique explicitement et propose la correction manuelle via « Modifier ».
 - La version iOS/Android native reste la méthode privilégiée pour une détection automatique fiable depuis la photothèque.
+
+
+## V1.5 — Photos sur Mac + logo
+- Logo SwissTravelMemory ajouté à la page d’accueil.
+- Nouvelle source « Photos sur Mac » dans le module d’import.
+- Le site explique clairement que l’accès direct à la photothèque Apple nécessite l’application native Mac via PhotoKit.
+- Aucun export manuel vers le Bureau n’est requis lorsque l’application Mac est utilisée.
+- La synchronisation Web ↔ Mac sera branchée lorsque le backend/cloud suisse sera activé.
+
+
+## V1.6 — Carte interactive
+- Clic sur une punaise : aperçu du voyage directement sur la carte.
+- L'aperçu affiche titre, lieu, dates, nombre de photos et jusqu'à 6 photos.
+- Bouton « Ouvrir le voyage » vers une galerie complète.
+- Si aucune photo n'est encore synchronisée, l'interface l'indique explicitement.
+- La version Web ne tente pas de contourner les protections de Safari/Photos : les images doivent provenir d'un import Web ou, plus tard, de la synchronisation Mac/iPhone vers le cloud suisse.
+
+
+## V1.6.1 — Photos automatiques
+- L’aperçu du voyage affiche automatiquement ses photos dès que le voyage est sélectionné.
+- Aucun clic sur une photo n’est nécessaire.
+- Le premier voyage disponible peut s’ouvrir automatiquement à l’arrivée sur la carte.
+- Les miniatures défilent automatiquement dans l’aperçu.
+- Si aucune photo n’est encore présente sur le Web, elles apparaîtront automatiquement après import ou future synchronisation Mac/iPhone.
+
+
+## V1.7 — Device Sync Ready
+Cette version prépare la vraie architecture Mac/iPhone → Web sans activer AWS.
+
+- Le Web ne tente plus de déduire un lieu que Safari n'a pas reçu.
+- Un format de données natif est prêt pour recevoir ville, pays, GPS, dates et photos.
+- Fonction JS stable : `SwissTravelMemoryReceiveNativeTrip(payload)`.
+- Les voyages synchronisés en mode développement sont stockés localement dans le navigateur.
+- Un bouton « Tester une synchronisation » permet de simuler un voyage détecté par l'application native.
+- Le cloud réel reste désactivé.

@@ -47,7 +47,7 @@
     markerLayer.clearLayers();
     trips.forEach(t=>{
       if(!Number.isFinite(Number(t.lat))||!Number.isFinite(Number(t.lng))) return;
-      const marker=L.marker([Number(t.lat),Number(t.lng)]).addTo(markerLayer).bindTooltip(t.name);
+      const marker=L.marker([Number(t.lat),Number(t.lng)]).addTo(markerLayer).bindTooltip(t.name).on("click",()=>window.SwissTravelMemoryOpenTripFromMap(trip));
       marker.on('click',()=>showTrip(t));
     });
   }
@@ -319,5 +319,218 @@
       document.getElementById("detectedSuggestions")?.scrollIntoView({behavior:"smooth",block:"start"});
     });
   }
+
+
+  const macPhotosInfo=document.getElementById("macPhotosInfo");
+  const macPhotosDialog=document.getElementById("macPhotosDialog");
+  if(macPhotosInfo && macPhotosDialog){
+    macPhotosInfo.addEventListener("click",()=>{
+      if(typeof macPhotosDialog.showModal==="function") macPhotosDialog.showModal();
+    });
+  }
+
+
+  const mapTripPreview=document.getElementById("mapTripPreview");
+  const mapTripClose=document.getElementById("mapTripClose");
+  const mapTripOpen=document.getElementById("mapTripOpen");
+  const tripDetailView=document.getElementById("tripDetailView");
+  const tripDetailBack=document.getElementById("tripDetailBack");
+  let selectedMapTrip=null;
+
+  function getTripPhotos(trip){
+    if(!trip) return [];
+    if(Array.isArray(trip.photosData)&&trip.photosData.length) return trip.photosData;
+    if(Array.isArray(trip.previewPhotos)&&trip.previewPhotos.length) return trip.previewPhotos;
+    if(Array.isArray(trip.photoUrls)&&trip.photoUrls.length) return trip.photoUrls;
+    if(Array.isArray(trip.photos)&&trip.photos.length && typeof trip.photos[0]==="string") return trip.photos;
+    if(typeof trip.cover==="string" && trip.cover) return [trip.cover];
+    if(typeof trip.thumbnail==="string" && trip.thumbnail) return [trip.thumbnail];
+    return [];
+  }
+
+  function renderPhotoStrip(container, photos, max=6){
+    if(!container) return;
+    const subset=photos.slice(0,max);
+    if(!subset.length){
+      container.innerHTML='<div class="map-trip-empty">Aucune photo disponible sur le Web pour ce voyage. Les photos apparaîtront automatiquement ici dès qu’elles seront importées ou synchronisées.</div>';
+      return;
+    }
+    container.innerHTML=subset.map((src,i)=>`<img src="${esc(src)}" alt="Photo du voyage ${i+1}">`).join('');
+  }
+
+
+  let mapPreviewCarouselTimer=null;
+  function startMapPreviewCarousel(){
+    if(mapPreviewCarouselTimer) clearInterval(mapPreviewCarouselTimer);
+    const strip=document.getElementById("mapTripPhotos");
+    if(!strip) return;
+    mapPreviewCarouselTimer=setInterval(()=>{
+      if(mapTripPreview?.hidden) return;
+      const images=[...strip.querySelectorAll("img")];
+      if(images.length<2) return;
+      const width=images[0].getBoundingClientRect().width+7;
+      const max=strip.scrollWidth-strip.clientWidth;
+      const next=strip.scrollLeft+width;
+      strip.scrollTo({left: next>=max-4 ? 0 : next, behavior:"smooth"});
+    },2600);
+  }
+
+  function openMapTripPreview(trip){
+    if(!mapTripPreview||!trip) return;
+    selectedMapTrip=trip;
+    document.getElementById("mapTripTitle").textContent=trip.name||trip.title||"Voyage";
+    document.getElementById("mapTripLocation").textContent=[trip.city,trip.country].filter(Boolean).join(", ")||"Lieu à confirmer";
+    document.getElementById("mapTripDates").textContent=trip.start&&trip.end?`${formatDate(trip.start)} → ${formatDate(trip.end)}`:"";
+    const photos=getTripPhotos(trip);
+    document.getElementById("mapTripCount").textContent=`${trip.photos||photos.length||0} photo(s)`;
+    renderPhotoStrip(document.getElementById("mapTripPhotos"),photos,6);
+    mapTripPreview.hidden=false;
+    startMapPreviewCarousel();
+  }
+
+  function closeMapTripPreview(){
+    if(mapTripPreview) mapTripPreview.hidden=true;
+    if(mapPreviewCarouselTimer){clearInterval(mapPreviewCarouselTimer);mapPreviewCarouselTimer=null;}
+    selectedMapTrip=null;
+  }
+
+  function openTripDetail(trip){
+    if(!trip||!tripDetailView) return;
+    const appViews=[...document.querySelectorAll(".app-view")];
+    appViews.forEach(v=>v.hidden=true);
+    tripDetailView.hidden=false;
+    document.getElementById("tripDetailTitle").textContent=trip.name||trip.title||"Voyage";
+    document.getElementById("tripDetailLocation").textContent=[trip.city,trip.country].filter(Boolean).join(", ")||"Lieu à confirmer";
+    document.getElementById("tripDetailDates").textContent=trip.start&&trip.end?`${formatDate(trip.start)} → ${formatDate(trip.end)}`:"";
+    const photos=getTripPhotos(trip);
+    document.getElementById("tripDetailCount").textContent=String(trip.photos||photos.length||0);
+    const gallery=document.getElementById("tripDetailGallery");
+    if(!photos.length){
+      gallery.innerHTML='<div class="trip-detail-empty"><strong>Aucune photo synchronisée.</strong><span>Les photos apparaîtront ici après import Web ou synchronisation depuis l’application Mac/iPhone.</span></div>';
+    }else{
+      gallery.innerHTML=photos.map((src,i)=>`<figure><img src="${esc(src)}" alt="Photo ${i+1} du voyage"><figcaption>Photo ${i+1}</figcaption></figure>`).join('');
+    }
+    closeMapTripPreview();
+  }
+
+  mapTripClose?.addEventListener("click",closeMapTripPreview);
+  mapTripOpen?.addEventListener("click",()=>{ if(selectedMapTrip) openTripDetail(selectedMapTrip); });
+  tripDetailBack?.addEventListener("click",()=>{
+    tripDetailView.hidden=true;
+    const mapView=document.getElementById("mapView")||document.querySelector('[data-view="map"]')||document.querySelector(".map-view");
+    if(mapView) mapView.hidden=false;
+  });
+
+  // Expose a stable hook so every map implementation can call the same preview.
+  window.SwissTravelMemoryOpenTripFromMap=openMapTripPreview;
+
+
+  document.addEventListener("click",(event)=>{
+    const pin=event.target.closest("[data-trip-id]");
+    if(!pin) return;
+    const id=pin.getAttribute("data-trip-id");
+    const allTrips=[...(window.deviceSyncedTrips||[]),...(window.demoTrips||[]),...(window.savedTrips||[]),...(typeof trips!=="undefined"&&Array.isArray(trips)?trips:[])];
+    const trip=allTrips.find(t=>String(t.id)===String(id));
+    if(trip) openMapTripPreview(trip);
+  });
+
+
+  function autoShowFirstTripWithPhotos(){
+    if(window.__swissTravelAutoPreviewDone) return;
+    const candidateSources=[
+      window.deviceSyncedTrips,
+      window.savedTrips,
+      window.demoTrips,
+      (typeof trips!=="undefined" && Array.isArray(trips)) ? trips : null
+    ].filter(Boolean);
+
+    const all=candidateSources.flat();
+    if(!all.length) return;
+
+    const firstWithPhotos=all.find(t=>getTripPhotos(t).length>0) || all[0];
+    if(firstWithPhotos){
+      window.__swissTravelAutoPreviewDone=true;
+      setTimeout(()=>openMapTripPreview(firstWithPhotos),350);
+    }
+  }
+
+  // When the user enters the map area, automatically show the first travel preview.
+  document.addEventListener("click",(event)=>{
+    const mapNav=event.target.closest('[data-view-target="map"], [data-target="map"], .nav-map, #navMap, a[href="#map"], button[data-view="map"]');
+    if(mapNav) setTimeout(autoShowFirstTripWithPhotos,250);
+  });
+
+  // Also attempt once after initialization in case the map is the default app view.
+  setTimeout(autoShowFirstTripWithPhotos,700);
+
+
+  const DEVICE_SYNC_KEY="swisstravelmemory.deviceSync.v1";
+
+  function loadDeviceSyncedTrips(){
+    try{return JSON.parse(localStorage.getItem(DEVICE_SYNC_KEY)||"[]");}
+    catch{return [];}
+  }
+
+  function saveDeviceSyncedTrips(items){
+    localStorage.setItem(DEVICE_SYNC_KEY,JSON.stringify(items));
+  }
+
+  function normalizeNativeTrip(payload){
+    return {
+      id: payload.id || `device-${Date.now()}`,
+      name: payload.name || payload.title || "Voyage",
+      title: payload.title || payload.name || "Voyage",
+      city: payload.city || "",
+      country: payload.country || "",
+      start: payload.start || payload.startDate || "",
+      end: payload.end || payload.endDate || "",
+      latitude: Number(payload.latitude ?? payload.lat ?? 0),
+      longitude: Number(payload.longitude ?? payload.lng ?? 0),
+      source: "SwissTravelMemory Mac/iPhone",
+      syncStatus: "local",
+      photosData: Array.isArray(payload.photosData) ? payload.photosData : [],
+      photos: Array.isArray(payload.photosData) ? payload.photosData.length : Number(payload.photoCount||0)
+    };
+  }
+
+  // Future native/cloud bridge: the backend can call this same function with a validated payload.
+  window.SwissTravelMemoryReceiveNativeTrip=function(payload){
+    const trip=normalizeNativeTrip(payload);
+    const items=loadDeviceSyncedTrips();
+    const existing=items.findIndex(x=>String(x.id)===String(trip.id));
+    if(existing>=0) items[existing]=trip; else items.unshift(trip);
+    saveDeviceSyncedTrips(items);
+    window.deviceSyncedTrips=items;
+    window.dispatchEvent(new CustomEvent("swisstravelmemory:trip-synced",{detail:trip}));
+    return trip;
+  };
+
+  window.deviceSyncedTrips=loadDeviceSyncedTrips();
+
+  const deviceSyncDialog=document.getElementById("deviceSyncDialog");
+  document.getElementById("importDeviceTrip")?.addEventListener("click",()=>{
+    if(deviceSyncDialog?.showModal) deviceSyncDialog.showModal();
+  });
+
+  document.getElementById("confirmDeviceSync")?.addEventListener("click",()=>{
+    const trip=window.SwissTravelMemoryReceiveNativeTrip({
+      title:document.getElementById("syncTitle")?.value,
+      city:document.getElementById("syncCity")?.value,
+      country:document.getElementById("syncCountry")?.value,
+      start:document.getElementById("syncStart")?.value,
+      end:document.getElementById("syncEnd")?.value,
+      latitude:document.getElementById("syncLat")?.value,
+      longitude:document.getElementById("syncLng")?.value,
+      photoCount:0
+    });
+    deviceSyncDialog?.close();
+    if(window.SwissTravelMemoryOpenTripFromMap) window.SwissTravelMemoryOpenTripFromMap(trip);
+  });
+
+  window.addEventListener("swisstravelmemory:trip-synced",(event)=>{
+    const trip=event.detail;
+    const status=document.querySelector(".device-sync-status strong");
+    if(status) status.textContent=`Dernier voyage reçu : ${trip.city||trip.country||trip.title}`;
+  });
 
 })();

@@ -24,6 +24,13 @@
     <main>
       <section class="premium-hero marketing-section">
         <div class="premium-hero-copy">
+          <div class="hero-brand-logo">
+            <img src="assets/swisstravelmemory-logo.png" alt="Logo SwissTravelMemory">
+            <div>
+              <strong>SwissTravelMemory</strong>
+              <span>Votre mémoire de voyage privée dans le cloud</span>
+            </div>
+          </div>
           <div class="premium-kicker">
             <span class="premium-swiss-icon" aria-hidden="true"><i></i><b></b></span>
             <span>Conçu en Suisse · Conforme RGPD & LPD</span>
@@ -67,6 +74,21 @@
           </div>
         </div>
       </section>
+
+<section id="deviceSyncPanel" class="device-sync-panel">
+  <div class="device-sync-icon">🇨🇭</div>
+  <div class="device-sync-copy">
+    <span class="eyebrow">Synchronisation appareil</span>
+    <h3>Mac / iPhone → Web</h3>
+    <p>Les lieux fiables sont détectés par l’application SwissTravelMemory via PhotoKit puis affichés ici. Le cloud réel reste désactivé pour le moment.</p>
+    <div class="device-sync-status">
+      <span class="status-dot"></span>
+      <strong>Mode local · synchronisation simulée</strong>
+    </div>
+  </div>
+  <button id="importDeviceTrip" type="button">Tester une synchronisation</button>
+</section>
+
 
       <section class="premium-manifesto marketing-section">
         <span class="eyebrow">La promesse SwissTravelMemory</span>
@@ -163,6 +185,18 @@
           <div class="source-section">
             <div class="source-head"><div><span class="eyebrow">Sources</span><h3>Connecter ma photothèque</h3><p>Choisissez d’où viennent vos souvenirs. Rien n’est transféré sans votre validation.</p></div><span class="privacy-badge">🔒 Import privé</span></div>
             <div class="source-grid">
+<div class="source-card mac-photos-source">
+  <div class="source-icon">
+    <img src="assets/swisstravelmemory-logo.png" alt="" aria-hidden="true">
+  </div>
+  <div>
+    <h3>Photos sur Mac</h3>
+    <p>Accès natif à la photothèque Apple via l’application SwissTravelMemory pour Mac.</p>
+    <span class="source-status">PHOTO KIT · DATES + LIEUX</span>
+  </div>
+  <button type="button" id="macPhotosInfo">Comment ça marche ?</button>
+</div>
+
               <button class="source-card active" data-source="device" type="button"><span class="source-icon">📱</span><b>Cet appareil</b><small>iPhone · iPad · Android</small><em>Disponible</em></button>
               <button class="source-card" data-source="icloud" type="button"><span class="source-icon">☁️</span><b>iCloud Photos</b><small>Via la photothèque Apple</small><em>Tester</em></button>
               <button class="source-card" data-source="google" type="button"><span class="source-icon">🟠</span><b>Google Photos</b><small>Connexion sécurisée</small><em>Démo</em></button>
@@ -206,12 +240,92 @@
           <div class="cloud-card"><div><span>Offre actuelle</span><h3>Voyageur · 100 Go</h3></div><div class="storage-number"><strong>18 Go</strong><span>utilisés sur 100 Go</span></div><div class="meter"><span style="width:18%"></span></div><div class="storage-breakdown"><span>📷 Photos 14,2 Go</span><span>🎬 Vidéos 3,5 Go</span><span>📄 Documents 0,3 Go</span></div></div>
           <div class="account-grid"><article><h3>🔐 Sécurité</h3><p>Authentification forte, sessions et appareils seront gérés dans la version cloud.</p><button class="outline" type="button" disabled>Configurer — bientôt</button></article><article><h3>📦 Export</h3><p>Téléchargez vos données et souvenirs dans un format portable.</p><button class="outline" type="button" disabled>Exporter — bientôt</button></article><article><h3>👨‍👩‍👧 Famille</h3><p>Partagez un espace de stockage et certains voyages avec vos proches.</p><button class="outline" type="button" disabled>Créer — bientôt</button></article></div>
         </section>
-      </main>
+      
+<section id="tripDetailView" class="trip-detail-view app-view" hidden>
+  <div class="trip-detail-shell">
+    <button id="tripDetailBack" class="outline" type="button">← Retour à la carte</button>
+    <div class="trip-detail-hero">
+      <div>
+        <span class="eyebrow">SwissTravelMemory</span>
+        <h2 id="tripDetailTitle">Voyage</h2>
+        <p id="tripDetailLocation"></p>
+        <small id="tripDetailDates"></small>
+      </div>
+      <div class="trip-detail-stats">
+        <strong id="tripDetailCount">0</strong>
+        <span>photos</span>
+      </div>
+    </div>
+    <div id="tripDetailGallery" class="trip-detail-gallery"></div>
+  </div>
+</section>
+
+</main>
     </div>
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
   <script src="https://cdn.jsdelivr.net/npm/exifr/dist/lite.umd.js"></script>
   <script src="app.js"></script>
+
+<dialog id="macPhotosDialog" class="mac-photos-dialog">
+  <form method="dialog">
+    <button class="dialog-close" aria-label="Fermer">×</button>
+    <img src="assets/swisstravelmemory-logo.png" alt="SwissTravelMemory">
+    <span class="eyebrow">Photos sur Mac</span>
+    <h2>Accès direct via l’application Mac</h2>
+    <p>Safari et Chrome ne peuvent pas parcourir directement la photothèque Apple. L’application SwissTravelMemory pour Mac utilise PhotoKit, avec votre autorisation, pour lire les dates et localisations disponibles sans export sur le Bureau.</p>
+    <ol>
+      <li>Ouvrez SwissTravelMemory sur votre Mac.</li>
+      <li>Autorisez l’accès à Photos.</li>
+      <li>Analysez vos photos localement.</li>
+      <li>Validez les voyages détectés.</li>
+      <li>Ils apparaîtront ensuite sur le Web lorsque la synchronisation cloud suisse sera activée.</li>
+    </ol>
+    <button value="close" type="submit">Compris</button>
+  </form>
+</dialog>
+
+
+<div id="mapTripPreview" class="map-trip-preview" hidden>
+  <div class="map-trip-preview-card">
+    <button id="mapTripClose" class="map-trip-close" type="button" aria-label="Fermer">×</button>
+    <div class="map-trip-header">
+      <span class="eyebrow">Voyage</span>
+      <h3 id="mapTripTitle">Voyage</h3>
+      <p id="mapTripLocation"></p>
+      <small id="mapTripDates"></small>
+    </div>
+    <div id="mapTripPhotos" class="map-trip-photos"></div>
+    <div class="map-trip-footer">
+      <span id="mapTripCount">0 photos</span>
+      <button id="mapTripOpen" type="button">Ouvrir le voyage</button>
+    </div>
+  </div>
+</div>
+
+
+<dialog id="deviceSyncDialog" class="device-sync-dialog">
+  <form method="dialog">
+    <button class="dialog-close" aria-label="Fermer">×</button>
+    <span class="eyebrow">Test sans cloud</span>
+    <h2>Importer un voyage détecté sur Mac/iPhone</h2>
+    <p>Cette maquette reproduit les données que l’application native enverra plus tard au Web : ville, pays, dates, GPS et photos autorisées.</p>
+    <div class="sync-form-grid">
+      <label>Nom du voyage<input id="syncTitle" value="Week-end à Paris"></label>
+      <label>Ville<input id="syncCity" value="Paris"></label>
+      <label>Pays<input id="syncCountry" value="France"></label>
+      <label>Date de début<input id="syncStart" type="date" value="2026-05-08"></label>
+      <label>Date de fin<input id="syncEnd" type="date" value="2026-05-11"></label>
+      <label>Latitude<input id="syncLat" type="number" step="any" value="48.8566"></label>
+      <label>Longitude<input id="syncLng" type="number" step="any" value="2.3522"></label>
+    </div>
+    <div class="sync-dialog-actions">
+      <button value="cancel" class="outline">Annuler</button>
+      <button id="confirmDeviceSync" type="button">Ajouter au Web</button>
+    </div>
+  </form>
+</dialog>
+
 </body>
 </html>
