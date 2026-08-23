@@ -103,3 +103,8 @@ input:focus,select:focus,textarea:focus{outline-color:var(--swiss-red);border-co
 .premium-final-cta{text-align:center;padding-top:100px;padding-bottom:120px}.premium-final-cta .premium-swiss-icon{display:block;margin:0 auto 18px}.premium-final-cta p{color:var(--premium-muted);margin:14px auto 24px}
 @media(max-width:900px){.premium-hero{grid-template-columns:1fr;padding-top:58px}.premium-hero-art{max-width:650px;width:100%;margin:0 auto}.premium-section-head{display:block}.experience-steps,.security-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:620px){.premium-hero{gap:42px;padding-top:42px}.premium-hero h1{font-size:54px}.premium-lead{font-size:16px}.premium-proof{gap:18px}.atlas-map{height:300px}.atlas-globe{font-size:175px}.experience-steps,.security-grid{grid-template-columns:1fr}.premium-manifesto,.premium-experience,.premium-security,.premium-pricing,.premium-final-cta{padding-top:70px;padding-bottom:75px}}
+
+/* V1.4.1 — lieux Web */
+.place-source{display:block;margin-top:6px;font-size:9px;font-style:normal;color:#8a817c;line-height:1.4}
+.detected-facts>div:first-child strong{color:#D52B1E}
+.detected-facts>div:first-child span{font-weight:700;color:var(--ink)}

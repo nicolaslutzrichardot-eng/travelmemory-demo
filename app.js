@@ -136,8 +136,11 @@
       }
     }
     detectedTrips=detectTripsFromAssets(assets);
+    status.textContent=`Analyse des lieux… ${files.length} photo(s), ${gpsCount} avec GPS.`;
+    detectedTrips=await enrichTripsWithWebPlaces(detectedTrips);
     renderDetectedTrips();
-    status.textContent=`Analyse terminée : ${files.length} photo(s), ${exifDates} date(s) EXIF, ${gpsCount} avec GPS, ${detectedTrips.length} voyage(s) potentiel(s). ${document.getElementById('cloudConsent').checked?'Sauvegarde cloud demandée (simulation).':'Aucun fichier n’a été envoyé : analyse locale uniquement.'}`;
+    const placesFound=detectedTrips.filter(t=>t.country && t.country!=='Lieu à confirmer').length;
+    status.textContent=`Analyse terminée : ${files.length} photo(s), ${exifDates} date(s) EXIF, ${gpsCount} avec GPS, ${detectedTrips.length} voyage(s) potentiel(s), ${placesFound} lieu(x) identifié(s). ${document.getElementById('cloudConsent').checked?'Sauvegarde cloud demandée (simulation).':'Aucun fichier n’a été envoyé : analyse locale uniquement.'}`;
   }
 
   function detectTripsFromAssets(assets){
@@ -172,7 +175,7 @@
     const suggestions=document.getElementById('suggestions');
     const active=detectedTrips.filter(t=>!t.ignored);
     if(!active.length){suggestions.innerHTML='<div class="detected-empty"><b>Aucun voyage proposé</b><small>Sélectionnez des photos ou utilisez le mode démonstration.</small></div>';return;}
-    suggestions.innerHTML=active.map(t=>`<article class="detected-trip" data-id="${t.id}"><div class="detected-flag">${esc(t.emoji)}</div><div class="detected-main"><div class="detected-title"><div><span class="eyebrow">Nouveau voyage détecté</span><h4>${esc(t.name)}</h4></div><span class="confidence">${t.gpsCount?'GPS + dates':'Dates disponibles'}</span></div><div class="detected-facts"><div><small>📍 LIEU DÉTECTÉ</small><strong>${esc(t.country)}</strong><span>${esc(t.city || 'Ville à confirmer')}</span></div><div><small>📅 DATES DÉTECTÉES</small><strong>${formatDate(t.start)} — ${formatDate(t.end)}</strong><span>${t.start===t.end?'1 journée':dateSpanLabel(t.start,t.end)}</span></div></div><div class="detected-meta"><span>📷 ${t.photos} photo(s)</span><span>📍 ${t.gpsCount} photo(s) avec GPS</span></div>${(!t.gpsCount||t.country==='Lieu à confirmer')?'<div class="metadata-warning">ℹ️ La date est disponible, mais le lieu doit être confirmé car ces fichiers ne contiennent pas de GPS exploitable.</div>':''}<div class="detected-actions"><button class="detected-create" data-id="${t.id}" type="button">Créer le voyage</button><button class="outline detected-edit" data-id="${t.id}" type="button">Modifier</button><button class="ghost detected-ignore" data-id="${t.id}" type="button">Ignorer</button></div></div></article>`).join('');
+    suggestions.innerHTML=active.map(t=>`<article class="detected-trip" data-id="${t.id}"><div class="detected-flag">${esc(t.emoji)}</div><div class="detected-main"><div class="detected-title"><div><span class="eyebrow">Nouveau voyage détecté</span><h4>${esc(t.name)}</h4></div><span class="confidence">${t.gpsCount?'GPS + dates':'Dates disponibles'}</span></div><div class="detected-facts"><div><small>📍 LIEU DÉTECTÉ</small><strong>${esc(t.country)}</strong><span>${esc(t.city || 'Ville à confirmer')}</span>${Number.isFinite(t.lat)&&Number.isFinite(t.lng)?`<em class="place-source">${esc(t.placeSource||'GPS')} · ${t.lat.toFixed(3)}, ${t.lng.toFixed(3)}</em>`:'<em class="place-source">Aucune coordonnée GPS transmise par le navigateur</em>'}</div><div><small>📅 DATES DÉTECTÉES</small><strong>${formatDate(t.start)} — ${formatDate(t.end)}</strong><span>${t.start===t.end?'1 journée':dateSpanLabel(t.start,t.end)}</span></div></div><div class="detected-meta"><span>📷 ${t.photos} photo(s)</span><span>📍 ${t.gpsCount} photo(s) avec GPS</span></div>${(!t.gpsCount||t.country==='Lieu à confirmer')?'<div class="metadata-warning">ℹ️ Le navigateur ne transmet pas de GPS exploitable pour ce groupe. Utilisez « Modifier » pour indiquer la ville/pays, ou la future application iOS/Android pour une détection native.</div>':''}<div class="detected-actions"><button class="detected-create" data-id="${t.id}" type="button">Créer le voyage</button><button class="outline detected-edit" data-id="${t.id}" type="button">Modifier</button><button class="ghost detected-ignore" data-id="${t.id}" type="button">Ignorer</button></div></div></article>`).join('');
     suggestions.querySelectorAll('.detected-create').forEach(b=>b.addEventListener('click',()=>createDetectedTrip(b.dataset.id)));
     suggestions.querySelectorAll('.detected-edit').forEach(b=>b.addEventListener('click',()=>editDetectedTrip(b.dataset.id)));
     suggestions.querySelectorAll('.detected-ignore').forEach(b=>b.addEventListener('click',()=>ignoreDetectedTrip(b.dataset.id)));
@@ -216,6 +219,66 @@
     const a=new Date(start+'T12:00:00'),b=new Date(end+'T12:00:00');
     const days=Math.max(1,Math.round((b-a)/86400000)+1);
     return `${days} jours`;
+  }
+
+
+  const webPlaceCache=new Map();
+
+  async function reverseGeocodeWeb(lat,lng){
+    if(!Number.isFinite(lat)||!Number.isFinite(lng)) return null;
+    const key=`${lat.toFixed(4)},${lng.toFixed(4)}`;
+    if(webPlaceCache.has(key)) return webPlaceCache.get(key);
+
+    try{
+      const url=`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lng)}&zoom=10&addressdetails=1&accept-language=fr`;
+      const response=await fetch(url,{headers:{Accept:'application/json'}});
+      if(!response.ok) throw new Error(`HTTP ${response.status}`);
+      const data=await response.json();
+      const a=data.address||{};
+      const place={
+        city:a.city||a.town||a.village||a.municipality||a.county||a.state||'',
+        region:a.state||a.region||'',
+        country:a.country||'',
+        countryCode:(a.country_code||'').toUpperCase()
+      };
+      webPlaceCache.set(key,place);
+      return place;
+    }catch(err){
+      console.warn('Identification du lieu indisponible',err);
+      webPlaceCache.set(key,null);
+      return null;
+    }
+  }
+
+  async function enrichTripsWithWebPlaces(trips){
+    for(const trip of trips){
+      if(!Number.isFinite(trip.lat)||!Number.isFinite(trip.lng)) continue;
+
+      // Les lieux connus intégrés restent instantanés.
+      const known=nearestKnownPlace(trip.lat,trip.lng);
+      if(known){
+        trip.country=known.country;
+        trip.city=known.name;
+        trip.emoji=known.emoji||trip.emoji;
+        trip.placeSource='GPS';
+        continue;
+      }
+
+      // Pour le reste du monde, convertir latitude/longitude en ville + pays.
+      const place=await reverseGeocodeWeb(trip.lat,trip.lng);
+      if(place && (place.country||place.city)){
+        trip.country=place.country||'Lieu à confirmer';
+        trip.city=place.city||place.region||'Ville à confirmer';
+        trip.name=`${trip.city!=='Ville à confirmer'?trip.city:trip.country} ${new Date(trip.start+'T12:00:00').getFullYear()}`;
+        trip.placeSource='GPS + OpenStreetMap';
+      }else{
+        trip.placeSource='GPS disponible · lieu à confirmer';
+      }
+
+      // Petite temporisation pour ne pas surcharger le service public.
+      await new Promise(resolve=>setTimeout(resolve,180));
+    }
+    return trips;
   }
 
   function nearestKnownPlace(lat,lng){let best=null,bestD=Infinity;for(const p of knownPlaces){const d=distanceKm(lat,lng,p.lat,p.lng);if(d<bestD){best=p;bestD=d;}}return best&&bestD<=best.radius?best:null;}

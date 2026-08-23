@@ -91,3 +91,10 @@ Correction de la page d’accueil : drapeau suisse visible dans le logo, palette
 
 ## V1.4 Premium
 Nouvelle page d’accueil premium, identité suisse renforcée et communication explicite RGPD + LPD suisse. Une note précise que la conformité juridique définitive dépendra de la mise en production réelle.
+
+
+## V1.4.1 — affichage des lieux
+- Si les photos Web contiennent un GPS, SwissTravelMemory convertit désormais les coordonnées en ville + pays.
+- La source du lieu et les coordonnées sont visibles dans le voyage détecté.
+- Si Safari/Chrome ne transmet pas le GPS, l'interface l'indique explicitement et propose la correction manuelle via « Modifier ».
+- La version iOS/Android native reste la méthode privilégiée pour une détection automatique fiable depuis la photothèque.
