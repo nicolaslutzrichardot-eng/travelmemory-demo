@@ -172,7 +172,7 @@
     const suggestions=document.getElementById('suggestions');
     const active=detectedTrips.filter(t=>!t.ignored);
     if(!active.length){suggestions.innerHTML='<div class="detected-empty"><b>Aucun voyage proposé</b><small>Sélectionnez des photos ou utilisez le mode démonstration.</small></div>';return;}
-    suggestions.innerHTML=active.map(t=>`<article class="detected-trip" data-id="${t.id}"><div class="detected-flag">${esc(t.emoji)}</div><div class="detected-main"><div class="detected-title"><div><span class="eyebrow">Nouveau voyage détecté</span><h4>${esc(t.name)}</h4></div><span class="confidence">${t.gpsCount?'GPS + dates':'Dates'}</span></div><p>${esc(t.country)} · ${esc(t.city)}</p><div class="detected-meta"><span>📅 ${formatDate(t.start)} → ${formatDate(t.end)}</span><span>📷 ${t.photos} photo(s)</span><span>📍 ${t.gpsCount} GPS</span></div><div class="detected-actions"><button class="detected-create" data-id="${t.id}" type="button">Créer le voyage</button><button class="outline detected-edit" data-id="${t.id}" type="button">Modifier</button><button class="ghost detected-ignore" data-id="${t.id}" type="button">Ignorer</button></div></div></article>`).join('');
+    suggestions.innerHTML=active.map(t=>`<article class="detected-trip" data-id="${t.id}"><div class="detected-flag">${esc(t.emoji)}</div><div class="detected-main"><div class="detected-title"><div><span class="eyebrow">Nouveau voyage détecté</span><h4>${esc(t.name)}</h4></div><span class="confidence">${t.gpsCount?'GPS + dates':'Dates disponibles'}</span></div><div class="detected-facts"><div><small>📍 LIEU DÉTECTÉ</small><strong>${esc(t.country)}</strong><span>${esc(t.city || 'Ville à confirmer')}</span></div><div><small>📅 DATES DÉTECTÉES</small><strong>${formatDate(t.start)} — ${formatDate(t.end)}</strong><span>${t.start===t.end?'1 journée':dateSpanLabel(t.start,t.end)}</span></div></div><div class="detected-meta"><span>📷 ${t.photos} photo(s)</span><span>📍 ${t.gpsCount} photo(s) avec GPS</span></div>${(!t.gpsCount||t.country==='Lieu à confirmer')?'<div class="metadata-warning">ℹ️ La date est disponible, mais le lieu doit être confirmé car ces fichiers ne contiennent pas de GPS exploitable.</div>':''}<div class="detected-actions"><button class="detected-create" data-id="${t.id}" type="button">Créer le voyage</button><button class="outline detected-edit" data-id="${t.id}" type="button">Modifier</button><button class="ghost detected-ignore" data-id="${t.id}" type="button">Ignorer</button></div></div></article>`).join('');
     suggestions.querySelectorAll('.detected-create').forEach(b=>b.addEventListener('click',()=>createDetectedTrip(b.dataset.id)));
     suggestions.querySelectorAll('.detected-edit').forEach(b=>b.addEventListener('click',()=>editDetectedTrip(b.dataset.id)));
     suggestions.querySelectorAll('.detected-ignore').forEach(b=>b.addEventListener('click',()=>ignoreDetectedTrip(b.dataset.id)));
@@ -199,7 +199,7 @@
     ];
     renderDetectedTrips();
     document.getElementById('photoPreview').innerHTML='<div class="demo-explainer"><span>✨</span><div><b>Mode démonstration activé</b><p>Ces voyages simulent le résultat obtenu après analyse d’une photothèque iPhone ou Android. Testez Créer, Modifier et Ignorer.</p></div></div>';
-    document.getElementById('importStatus').textContent='3 voyages potentiels retrouvés dans 1 228 photos de démonstration.';
+    document.getElementById('importStatus').innerHTML='✅ <b>3 voyages détectés avec lieux et dates.</b> Japon : 12–27 avril 2025 · Italie : 8–15 mai 2024 · New York : 8–13 septembre 2025.';
   });
 
   googleDemoBtn.addEventListener('click',()=>{
@@ -211,6 +211,12 @@
     document.getElementById('importStatus').innerHTML='✅ <b>Google Photos connecté — démonstration.</b> Deux voyages potentiels sont proposés ci-contre.';
     document.getElementById('photoPreview').innerHTML='<div class="demo-explainer"><span>🟠</span><div><b>Google Photos Picker — simulation</b><p>La vraie version ouvrira le sélecteur sécurisé Google. Seules les photos choisies par l’utilisateur seront analysées.</p></div></div>';
   });
+
+  function dateSpanLabel(start,end){
+    const a=new Date(start+'T12:00:00'),b=new Date(end+'T12:00:00');
+    const days=Math.max(1,Math.round((b-a)/86400000)+1);
+    return `${days} jours`;
+  }
 
   function nearestKnownPlace(lat,lng){let best=null,bestD=Infinity;for(const p of knownPlaces){const d=distanceKm(lat,lng,p.lat,p.lng);if(d<bestD){best=p;bestD=d;}}return best&&bestD<=best.radius?best:null;}
   function distanceKm(a,b,c,d){const r=6371,toRad=x=>x*Math.PI/180;const dLat=toRad(c-a),dLon=toRad(d-b);const x=Math.sin(dLat/2)**2+Math.cos(toRad(a))*Math.cos(toRad(c))*Math.sin(dLon/2)**2;return 2*r*Math.asin(Math.sqrt(x));}

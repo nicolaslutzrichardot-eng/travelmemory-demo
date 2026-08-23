@@ -61,3 +61,7 @@ Cette version ajoute le parcours testable **Photothèque → analyse dates/GPS �
 - `Tester avec des voyages de démonstration` permet de tester l’expérience sans utiliser de photos personnelles.
 - Aucun fichier n’est envoyé vers un serveur dans cette démo.
 - Sur iPhone/Android, un navigateur ne peut pas scanner librement toute la photothèque : la version native utilisera les permissions système prévues à cet effet.
+
+
+## V1.1.1 correction
+Les cartes de voyages détectés affichent maintenant explicitement le lieu, les villes/étapes, les dates de début/fin et le nombre de jours. Si le GPS manque, TravelMemory l'indique clairement au lieu d'inventer un lieu.
