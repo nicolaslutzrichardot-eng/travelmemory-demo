@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0f5f58" />
+  <title>TravelMemory — Votre mémoire de voyage privée dans le cloud</title>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="site" class="site">
+    <header class="marketing-nav">
+      <button class="brand brand-button" id="brandHome" type="button" aria-label="Accueil TravelMemory">
+        <span class="brand-mark">TM</span><span>TravelMemory</span>
+      </button>
+      <nav class="marketing-links" aria-label="Navigation commerciale">
+        <a href="#features">Fonctions</a><a href="#security">Sécurité</a><a href="#pricing">Tarifs</a>
+      </nav>
+      <div class="nav-actions"><button class="ghost" id="loginBtn" type="button">Se connecter</button><button id="tryBtn" type="button">Tester TravelMemory</button></div>
+    </header>
+
+    <main>
+      <section class="hero marketing-section">
+        <div class="hero-copy">
+          <span class="pill">Votre mémoire de voyage privée dans le cloud</span>
+          <h1>Vos photos racontent où vous êtes allé. <span>TravelMemory construit votre histoire.</span></h1>
+          <p>Retrouvez vos anciens voyages à partir des dates et lieux de vos photos, organisez-les sur une carte mondiale, sauvegardez vos souvenirs et partagez-les uniquement avec les personnes que vous choisissez.</p>
+          <div class="hero-actions"><button id="heroTry" type="button">Tester la démo</button><a class="button-link secondary-link" href="#features">Découvrir le produit</a></div>
+          <div class="trust-row"><span>✓ Photos privées</span><span>✓ Hébergement européen prévu</span><span>✓ Web · iOS · Android</span></div>
+        </div>
+        <div class="hero-visual" aria-label="Aperçu TravelMemory">
+          <div class="mini-window">
+            <div class="mini-bar"><span></span><span></span><span></span></div>
+            <div class="mini-stats"><strong>24 pays</strong><strong>63 voyages</strong><strong>18 427 photos</strong></div>
+            <div class="world-card">
+              <div class="world-emoji">🌍</div>
+              <div class="pin p1">📍<small>Paris</small></div><div class="pin p2">📍<small>Tokyo</small></div><div class="pin p3">📍<small>New York</small></div>
+            </div>
+            <div class="memory-strip"><div>🇯🇵 <b>Japon 2025</b><small>684 photos retrouvées</small></div><button type="button" id="miniOpen">Ouvrir</button></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="features" class="marketing-section feature-section">
+        <div class="section-title"><span class="eyebrow">Le cœur du produit</span><h2>De la photothèque à une carte vivante de votre vie</h2></div>
+        <div class="feature-grid">
+          <article><div class="icon">🧭</div><h3>Retrouver</h3><p>Analyse locale des dates et coordonnées GPS disponibles pour proposer automatiquement vos voyages.</p></article>
+          <article><div class="icon">🗺️</div><h3>Visualiser</h3><p>Pays, régions, villes et étapes réunis sur une carte mondiale personnelle et interactive.</p></article>
+          <article><div class="icon">☁️</div><h3>Sauvegarder</h3><p>Photos, vidéos, notes et documents conservés dans votre espace cloud privé.</p></article>
+          <article><div class="icon">🔐</div><h3>Partager</h3><p>Droits différents pour la famille, les amis ou les collaborateurs, voyage par voyage.</p></article>
+        </div>
+      </section>
+
+      <section id="security" class="marketing-section split-section">
+        <div><span class="eyebrow">Confidentialité</span><h2>Vos souvenirs ne sont pas un réseau social.</h2><p>TravelMemory est conçu comme un coffre de voyage privé. L'utilisateur décide quels fichiers sont analysés, lesquels sont sauvegardés et qui peut accéder à chaque voyage.</p></div>
+        <div class="security-card"><div>🔒 <b>Privé par défaut</b></div><div>👤 <b>Accès par invitation</b></div><div>🛡️ <b>Permissions fines</b></div><div>🇪🇺 <b>Architecture RGPD</b></div></div>
+      </section>
+
+      <section id="pricing" class="marketing-section pricing-section">
+        <div class="section-title"><span class="eyebrow">Abonnements</span><h2>Un espace adapté à chaque voyageur</h2><p>Tarifs indicatifs pour la maquette. Ils seront fixés après validation des coûts cloud.</p></div>
+        <div class="price-grid">
+          <article><h3>Découverte</h3><strong>5 Go</strong><p>Pour tester TravelMemory.</p><button class="outline start-demo">Essayer</button></article>
+          <article class="recommended"><span class="tag">Recommandé</span><h3>Voyageur</h3><strong>100 Go</strong><p>Pour vos photos et souvenirs.</p><button class="start-demo">Choisir</button></article>
+          <article><h3>Explorer</h3><strong>500 Go</strong><p>Photos et vidéos régulières.</p><button class="outline start-demo">Choisir</button></article>
+          <article><h3>Globetrotter</h3><strong>2 To</strong><p>Une grande mémoire familiale.</p><button class="outline start-demo">Choisir</button></article>
+        </div>
+      </section>
+    </main>
+    <footer><div class="brand"><span class="brand-mark">TM</span><span>TravelMemory</span></div><p>Prototype V1 testable — aucune photo n'est envoyée vers un serveur dans cette démo.</p></footer>
+  </div>
+
+  <div id="app" class="app hidden" aria-hidden="true">
+    <header class="app-topbar">
+      <button id="backSite" class="brand brand-button" type="button"><span class="brand-mark">TM</span><span>TravelMemory</span></button>
+      <div class="app-top-actions"><span class="cloud-indicator">● Démo locale</span><select id="lang" aria-label="Langue"><option value="fr">FR</option><option value="en">EN</option><option value="de">DE</option></select><button class="avatar" id="accountBtn" type="button" aria-label="Compte">JD</button></div>
+    </header>
+    <div class="app-layout">
+      <nav class="sidebar" aria-label="Navigation application">
+        <button class="nav active" data-view="map" type="button">🗺️ <span>Carte</span></button>
+        <button class="nav" data-view="trips" type="button">🧳 <span>Voyages</span></button>
+        <button class="nav" data-view="import" type="button">📷 <span>Importer</span></button>
+        <button class="nav" data-view="sharing" type="button">🔐 <span>Partage</span></button>
+        <button class="nav" data-view="account" type="button">☁️ <span>Cloud</span></button>
+      </nav>
+      <main class="app-content">
+        <section id="view-map" class="view active-view">
+          <div class="view-head"><div><span class="eyebrow">Votre histoire sur une carte</span><h2>Bonjour, Jean 👋</h2><p>Voici les souvenirs déjà retrouvés dans votre TravelMemory.</p></div><button id="quickImport" type="button">+ Importer des photos</button></div>
+          <div class="dashboard-stats"><article><span>Pays visités</span><strong id="statCountries">0</strong></article><article><span>Voyages</span><strong id="statTrips">0</strong></article><article><span>Photos</span><strong id="statPhotos">0</strong></article><article><span>Stockage</span><strong>18 Go</strong></article></div>
+          <div class="map-shell"><div id="map"></div><div class="map-note">Carte OpenStreetMap · cliquez sur une punaise</div></div>
+          <div id="tripDetail" class="detail-panel"><div class="empty-state"><div>📍</div><h3>Sélectionnez un voyage</h3><p>Cliquez sur une punaise de la carte pour ouvrir ses souvenirs.</p></div></div>
+        </section>
+
+        <section id="view-trips" class="view">
+          <div class="view-head"><div><span class="eyebrow">Journal</span><h2>Mes voyages</h2><p>Organisez tous vos déplacements personnels et professionnels.</p></div><button id="newTripBtn" type="button">+ Nouveau voyage</button></div>
+          <div id="tripList" class="trip-grid"></div>
+          <dialog id="tripDialog"><form id="tripForm" method="dialog" class="dialog-form"><div class="dialog-head"><h3>Nouveau voyage</h3><button id="cancelTrip" class="icon-button" type="button" aria-label="Fermer">×</button></div><div class="form-grid"><label>Nom du voyage<input id="tripName" required placeholder="Ex. Italie 2026"></label><label>Pays<input id="tripCountry" required placeholder="Ex. Italie"></label><label>Ville<input id="tripCity" placeholder="Ex. Rome"></label><label>Type<select id="tripType"><option>Vacances</option><option>Professionnel</option><option>Autre</option></select></label><label>Début<input id="tripStart" type="date"></label><label>Fin<input id="tripEnd" type="date"></label><label class="full">Souvenir / commentaire<textarea id="tripNote" rows="4" placeholder="Ce que vous souhaitez retenir de ce voyage..."></textarea></label></div><div class="dialog-actions"><button class="ghost" id="cancelTrip2" type="button">Annuler</button><button type="submit">Créer le voyage</button></div></form></dialog>
+        </section>
+
+        <section id="view-import" class="view">
+          <div class="view-head"><div><span class="eyebrow">Import intelligent</span><h2>Retrouver mes voyages</h2><p>Sélectionnez des photos. L'analyse de démonstration se fait dans votre navigateur.</p></div></div>
+          <div class="source-section">
+            <div class="source-head"><div><span class="eyebrow">Sources</span><h3>Connecter ma photothèque</h3><p>Choisissez d’où viennent vos souvenirs. Rien n’est transféré sans votre validation.</p></div><span class="privacy-badge">🔒 Import privé</span></div>
+            <div class="source-grid">
+              <button class="source-card active" data-source="device" type="button"><span class="source-icon">📱</span><b>Cet appareil</b><small>iPhone · iPad · Android</small><em>Disponible</em></button>
+              <button class="source-card" data-source="icloud" type="button"><span class="source-icon">☁️</span><b>iCloud Photos</b><small>Via la photothèque Apple</small><em>Tester</em></button>
+              <button class="source-card" data-source="google" type="button"><span class="source-icon">🟠</span><b>Google Photos</b><small>Connexion sécurisée</small><em>Démo</em></button>
+              <button class="source-card" data-source="computer" type="button"><span class="source-icon">💻</span><b>Ordinateur</b><small>Photos ou dossier exporté</small><em>Disponible</em></button>
+            </div>
+            <div id="sourceInfo" class="source-info"><b>Cet appareil</b><span>Sélectionnez les photos que TravelMemory peut analyser.</span></div>
+          </div>
+          <div class="import-layout"><div class="upload-card"><div class="upload-icon" id="uploadIcon">📷</div><h3 id="uploadTitle">Choisir des photos</h3><p id="uploadText">TravelMemory ne parcourt jamais votre appareil sans votre action.</p><label class="file-button" id="fileButton">Sélectionner mes photos<input id="photoInput" type="file" accept="image/*" multiple hidden></label><button id="googleDemoBtn" class="google-demo hidden" type="button">Connecter Google Photos — démo</button><label class="checkline"><input id="cloudConsent" type="checkbox"> J'autoriserais la sauvegarde cloud de ces fichiers</label><div id="importStatus" class="notice">Aucune photo sélectionnée.</div></div><div class="suggestion-card"><span class="eyebrow">Suggestions</span><h3>Voyages détectés</h3><div id="suggestions" class="suggestion-list"><p class="muted">Les groupes apparaîtront ici après analyse.</p></div></div></div>
+          <div id="photoPreview" class="photo-grid"></div>
+        </section>
+
+        <section id="view-sharing" class="view">
+          <div class="view-head"><div><span class="eyebrow">Accès sécurisé</span><h2>Partager un voyage</h2><p>Chaque invitation donne uniquement les droits que vous choisissez.</p></div></div>
+          <div class="sharing-layout"><form id="shareForm" class="share-card"><label>Voyage<select id="shareTrip"></select></label><label>E-mail de l'invité<input id="shareEmail" type="email" required placeholder="marie@example.com"></label><label>Droits<select id="shareRole"><option value="viewer">Lecture uniquement</option><option value="commenter">Lecture + commentaires</option><option value="contributor">Ajouter des photos</option></select></label><button type="submit">Créer l'invitation</button></form><div class="permission-card"><h3>Permissions TravelMemory</h3><ul><li>👁️ Voir les souvenirs</li><li>💬 Autoriser les commentaires</li><li>📷 Ajouter ses propres photos</li><li>⬇️ Autoriser le téléchargement</li></ul><div id="shareResult" class="notice">Aucune invitation créée.</div></div></div>
+        </section>
+
+        <section id="view-account" class="view">
+          <div class="view-head"><div><span class="eyebrow">Compte & stockage</span><h2>Mon cloud TravelMemory</h2><p>Simulation de l'offre Voyageur.</p></div></div>
+          <div class="cloud-card"><div><span>Offre actuelle</span><h3>Voyageur · 100 Go</h3></div><div class="storage-number"><strong>18 Go</strong><span>utilisés sur 100 Go</span></div><div class="meter"><span style="width:18%"></span></div><div class="storage-breakdown"><span>📷 Photos 14,2 Go</span><span>🎬 Vidéos 3,5 Go</span><span>📄 Documents 0,3 Go</span></div></div>
+          <div class="account-grid"><article><h3>🔐 Sécurité</h3><p>Authentification forte, sessions et appareils seront gérés dans la version cloud.</p><button class="outline" type="button" disabled>Configurer — bientôt</button></article><article><h3>📦 Export</h3><p>Téléchargez vos données et souvenirs dans un format portable.</p><button class="outline" type="button" disabled>Exporter — bientôt</button></article><article><h3>👨‍👩‍👧 Famille</h3><p>Partagez un espace de stockage et certains voyages avec vos proches.</p><button class="outline" type="button" disabled>Créer — bientôt</button></article></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="https://cdn.jsdelivr.net/npm/exifr/dist/lite.umd.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
