@@ -1,5 +1,5 @@
 (() => {
-  const STORAGE_KEY = 'travelmemory-v1-trips';
+  const STORAGE_KEY = 'swisstravelmemory-v1-trips';
   const defaultTrips = [
     {id:1,name:'Japon 2025',country:'Japon',city:'Tokyo · Kyoto · Osaka',type:'Vacances',start:'2025-04-12',end:'2025-04-27',note:'Cerisiers, temples et cuisine locale.',lat:35.6762,lng:139.6503,photos:684,emoji:'🇯🇵'},
     {id:2,name:'New York 2025',country:'États-Unis',city:'New York',type:'Professionnel',start:'2025-09-08',end:'2025-09-13',note:'Déplacement professionnel et quelques promenades à Manhattan.',lat:40.7128,lng:-74.0060,photos:216,emoji:'🇺🇸'},
@@ -102,10 +102,10 @@
     document.querySelectorAll('.source-card').forEach(b=>b.classList.toggle('active',b.dataset.source===source));
     googleDemoBtn.classList.add('hidden'); fileButton.classList.remove('hidden'); demoTripsBtn.classList.remove('hidden');
     const content={
-      device:{icon:'📱',title:'Choisir des photos',text:'Le sélecteur de votre appareil s’ouvre. TravelMemory n’accède qu’aux fichiers que vous choisissez.',info:'<b>Cet appareil</b><span>Import réel dans cette démo locale : les fichiers restent dans votre navigateur.</span>'},
+      device:{icon:'📱',title:'Choisir des photos',text:'Le sélecteur de votre appareil s’ouvre. SwissTravelMemory n’accède qu’aux fichiers que vous choisissez.',info:'<b>Cet appareil</b><span>Import réel dans cette démo locale : les fichiers restent dans votre navigateur.</span>'},
       computer:{icon:'💻',title:'Importer depuis l’ordinateur',text:'Choisissez plusieurs photos depuis votre Mac, PC ou un dossier exporté.',info:'<b>Ordinateur</b><span>Import réel dans cette démo locale. Aucun fichier n’est envoyé sur Internet.</span>'},
       icloud:{icon:'☁️',title:'Choisir depuis iCloud Photos',text:'Sur iPhone, iPad ou Mac, le sélecteur système peut présenter les photos iCloud disponibles dans votre photothèque.',info:'<b>iCloud Photos</b><span>Test via le sélecteur Apple de votre appareil. Une connexion iCloud serveur-à-serveur n’est pas active dans cette V1.1.</span>'},
-      google:{icon:'🟠',title:'Google Photos',text:'Testez ici le futur parcours de connexion et de sélection Google Photos.',info:'<b>Google Photos</b><span>Mode démonstration : la vraie connexion nécessitera OAuth Google et le backend TravelMemory.</span>'}
+      google:{icon:'🟠',title:'Google Photos',text:'Testez ici le futur parcours de connexion et de sélection Google Photos.',info:'<b>Google Photos</b><span>Mode démonstration : la vraie connexion nécessitera OAuth Google et le backend SwissTravelMemory.</span>'}
     }[source];
     uploadIcon.textContent=content.icon; uploadTitle.textContent=content.title; uploadText.textContent=content.text; sourceInfo.innerHTML=content.info;
     if(source==='google'){ fileButton.classList.add('hidden'); googleDemoBtn.classList.remove('hidden'); demoTripsBtn.classList.add('hidden'); }

@@ -1,13 +1,13 @@
-# TravelMemory — V1 testable
+# SwissTravelMemory — V1 testable
 
-Prototype fonctionnel du produit TravelMemory : **Votre mémoire de voyage privée dans le cloud**.
+Prototype fonctionnel du produit SwissTravelMemory : **Votre mémoire de voyage privée dans le cloud**.
 
 ## Tester
 
-1. Décompressez `TravelMemory_V1_testable.zip`.
+1. Décompressez `SwissTravelMemory_V1_testable.zip`.
 2. Ouvrez `index.html` dans Chrome, Edge, Safari ou Firefox.
 3. Une connexion Internet est nécessaire pour la carte OpenStreetMap et la lecture EXIF via les bibliothèques de démonstration.
-4. Cliquez sur **Tester TravelMemory** pour ouvrir l'application.
+4. Cliquez sur **Tester SwissTravelMemory** pour ouvrir l'application.
 
 Pour une expérience plus fiable, vous pouvez aussi lancer un petit serveur local depuis le dossier :
 
@@ -47,12 +47,12 @@ Transformer cette démo en architecture de production : authentification, base d
 La V1 inclut désormais quatre sources : Cet appareil, iCloud Photos, Google Photos et Ordinateur.
 - Cet appareil / Ordinateur : sélection locale réelle de fichiers et analyse EXIF dans le navigateur.
 - iCloud Photos : utilise le sélecteur système de l'appareil. Sur iPhone/iPad/Mac, les photos disponibles via la photothèque Apple peuvent être proposées selon les réglages et autorisations de l'appareil.
-- Google Photos : parcours de connexion et sélection simulé dans cette V1. La connexion réelle nécessitera un projet Google OAuth/Photos Picker et le backend TravelMemory.
+- Google Photos : parcours de connexion et sélection simulé dans cette V1. La connexion réelle nécessitera un projet Google OAuth/Photos Picker et le backend SwissTravelMemory.
 
 Aucun fichier n'est envoyé vers un serveur dans cette version locale.
 
 
-## TravelMemory V1.1 — Voyages détectés
+## SwissTravelMemory V1.1 — Voyages détectés
 
 Cette version ajoute le parcours testable **Photothèque → analyse dates/GPS → voyages proposés → Créer / Modifier / Ignorer**.
 
@@ -64,14 +64,14 @@ Cette version ajoute le parcours testable **Photothèque → analyse dates/GPS �
 
 
 ## V1.1.1 correction
-Les cartes de voyages détectés affichent maintenant explicitement le lieu, les villes/étapes, les dates de début/fin et le nombre de jours. Si le GPS manque, TravelMemory l'indique clairement au lieu d'inventer un lieu.
+Les cartes de voyages détectés affichent maintenant explicitement le lieu, les villes/étapes, les dates de début/fin et le nombre de jours. Si le GPS manque, SwissTravelMemory l'indique clairement au lieu d'inventer un lieu.
 
 
 ## V1.1.2 — GPS et lieux
 - Lecture EXIF renforcée avec exifr.
 - Diagnostic visible : nombre de photos avec date et nombre de photos avec GPS accessible.
 - Conversion latitude/longitude en ville/pays via OpenStreetMap Nominatim lorsque le GPS est disponible.
-- Si Safari/iOS ne fournit pas le GPS dans le fichier choisi, TravelMemory l'indique clairement au lieu d'inventer un lieu.
+- Si Safari/iOS ne fournit pas le GPS dans le fichier choisi, SwissTravelMemory l'indique clairement au lieu d'inventer un lieu.
 
 Important : certaines photos exportées depuis iOS/Google Photos peuvent ne plus contenir les coordonnées GPS selon les réglages de partage ou de confidentialité.
 

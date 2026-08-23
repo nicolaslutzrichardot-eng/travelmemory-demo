@@ -34,3 +34,40 @@
 .native-mobile-steps{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:11px}.native-mobile-steps span{background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 8px;font-size:9px;font-weight:750}
 #simulateNativeScan{min-height:42px}
 @media(max-width:620px){.native-mobile-panel{grid-template-columns:1fr}.native-mobile-icon{width:46px;height:46px}.native-mobile-copy h3{font-size:17px}}
+
+/* SwissTravelMemory — identité suisse rouge/blanc */
+:root{
+  --swiss-red:#D52B1E;
+  --swiss-red-dark:#B72018;
+  --swiss-red-soft:#FCE9E7;
+  --swiss-white:#FFFFFF;
+  --brand:var(--swiss-red);
+  --accent:var(--swiss-red);
+  --primary:var(--swiss-red);
+}
+body{accent-color:var(--swiss-red)}
+button:not(.ghost):not(.outline), .primary, .cta, .nav-cta{
+  background:var(--swiss-red) !important;
+  border-color:var(--swiss-red) !important;
+  color:#fff !important;
+}
+button:not(.ghost):not(.outline):hover, .primary:hover, .cta:hover, .nav-cta:hover{
+  background:var(--swiss-red-dark) !important;
+  border-color:var(--swiss-red-dark) !important;
+}
+.outline{
+  border-color:var(--swiss-red) !important;
+  color:var(--swiss-red) !important;
+}
+.eyebrow,.confidence,.detected-facts small{color:var(--swiss-red) !important}
+a{color:var(--swiss-red)}
+input:focus,select:focus,textarea:focus{outline-color:var(--swiss-red);border-color:var(--swiss-red)}
+.native-mobile-panel{
+  background:linear-gradient(135deg,#fff7f6,#fdecea) !important;
+}
+.swiss-brand-badge{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:#fff;border:1px solid rgba(213,43,30,.18);
+  color:#8d1b14;border-radius:999px;padding:.4rem .7rem;
+  font-weight:800;
+}
