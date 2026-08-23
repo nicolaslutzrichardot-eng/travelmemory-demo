@@ -83,3 +83,7 @@ La démo distingue maintenant clairement :
 - Un bouton « Simuler l’analyse iPhone / Android » permet de tester dès maintenant l’expérience finale sans prétendre que Safari donne accès à toute la photothèque.
 
 La vraie analyse iOS nécessitera une application signée utilisant PhotoKit et une distribution de test (Xcode/TestFlight). Android utilisera les API/permissions adaptées à la version du système.
+
+
+## V1.3.1
+Correction de la page d’accueil : drapeau suisse visible dans le logo, palette rouge, nom SwissTravelMemory non masqué et carte repositionnée sans chevauchement.

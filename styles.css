@@ -71,3 +71,12 @@ input:focus,select:focus,textarea:focus{outline-color:var(--swiss-red);border-co
   color:#8d1b14;border-radius:999px;padding:.4rem .7rem;
   font-weight:800;
 }
+
+/* V1.3.1 — correction marque suisse + hero sans chevauchement */
+.brand{min-width:0}.brand-button{display:flex;align-items:center;gap:10px;white-space:nowrap;overflow:visible}.brand-name{display:block;white-space:nowrap;line-height:1;font-weight:850;letter-spacing:-.02em}.brand-mark.swiss-flag{position:relative;flex:0 0 40px;width:40px;height:40px;border-radius:11px;background:#D52B1E !important;display:inline-block;box-shadow:0 6px 18px rgba(213,43,30,.18)}
+.brand-mark.swiss-flag .cross-h,.brand-mark.swiss-flag .cross-v{position:absolute;display:block;background:#fff;border-radius:1px;left:50%;top:50%;transform:translate(-50%,-50%)}
+.brand-mark.swiss-flag .cross-h{width:22px;height:7px}.brand-mark.swiss-flag .cross-v{width:7px;height:22px}
+.hero{grid-template-columns:minmax(0,1.14fr) minmax(340px,.86fr);gap:clamp(36px,5vw,72px);overflow:hidden}.hero-copy{min-width:0}.hero-visual{min-width:0;align-self:center}.hero-brandline{display:flex;align-items:center;gap:10px;margin-bottom:14px;color:#D52B1E;font-size:17px;letter-spacing:-.015em}.hero-brandline .hero-flag{font-size:25px;line-height:1}.hero-brandline strong{white-space:nowrap}.mini-window{max-width:100%;box-sizing:border-box}.world-card{max-width:100%;box-sizing:border-box}
+@media(max-width:1050px){.hero{grid-template-columns:1fr;}.hero-copy{max-width:850px}.hero-visual{width:100%;max-width:760px;margin:0 auto}.mini-window{transform:none}}
+@media(max-width:720px){.marketing-nav{gap:8px}.marketing-nav .brand-button{max-width:58vw}.marketing-nav .brand-name{font-size:15px;overflow:hidden;text-overflow:ellipsis}.marketing-nav .brand-mark.swiss-flag{flex-basis:36px;width:36px;height:36px;border-radius:10px}.brand-mark.swiss-flag .cross-h{width:20px;height:6px}.brand-mark.swiss-flag .cross-v{width:6px;height:20px}.hero{padding-top:40px}.hero-brandline{font-size:16px}.hero h1{font-size:clamp(40px,12vw,54px);overflow-wrap:anywhere}.hero-visual{margin-top:4px}.world-card{height:230px}.world-emoji{font-size:128px}.app-topbar .brand span:last-child{display:block;max-width:52vw;overflow:hidden;text-overflow:ellipsis}.app-topbar .brand-mark.swiss-flag{flex-basis:34px;width:34px;height:34px}}
+@media(max-width:390px){.marketing-nav .brand-button{max-width:64vw}.marketing-nav .brand-name{font-size:14px}.nav-actions #tryBtn{padding:9px 10px;font-size:10px}.hero-brandline strong{white-space:normal}}

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#0f5f58" />
+  <meta name="theme-color" content="#D52B1E" />
   <title>🇨🇭 SwissTravelMemory — Votre mémoire de voyage privée dans le cloud</title>
   <link rel="preconnect" href="https://unpkg.com" crossorigin>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
@@ -13,7 +13,7 @@
   <div id="site" class="site">
     <header class="marketing-nav">
       <button class="brand brand-button" id="brandHome" type="button" aria-label="Accueil SwissTravelMemory">
-        <span class="brand-mark">TM</span><span>SwissTravelMemory</span>
+        <span class="brand-mark swiss-flag" aria-hidden="true"><span class="cross-h"></span><span class="cross-v"></span></span><span class="brand-name">SwissTravelMemory</span>
       </button>
       <nav class="marketing-links" aria-label="Navigation commerciale">
         <a href="#features">Fonctions</a><a href="#security">Sécurité</a><a href="#pricing">Tarifs</a>
@@ -24,8 +24,9 @@
     <main>
       <section class="hero marketing-section">
         <div class="hero-copy">
+          <div class="hero-brandline"><span class="hero-flag">🇨🇭</span><strong>SwissTravelMemory</strong></div>
           <span class="pill">Votre mémoire de voyage privée dans le cloud</span>
-          <h1>Vos photos racontent où vous êtes allé. <span>SwissTravelMemory construit votre histoire.</span></h1>
+          <h1>Vos photos racontent où vous êtes allé. <span>Nous construisons votre histoire de voyage.</span></h1>
           <p>Retrouvez vos anciens voyages à partir des dates et lieux de vos photos, organisez-les sur une carte mondiale, sauvegardez vos souvenirs et partagez-les uniquement avec les personnes que vous choisissez.</p>
           <div class="hero-actions"><button id="heroTry" type="button">Tester la démo</button><a class="button-link secondary-link" href="#features">Découvrir le produit</a></div>
           <div class="trust-row"><span>✓ Photos privées</span><span>✓ Hébergement européen prévu</span><span>✓ Web · iOS · Android</span></div>
@@ -68,12 +69,12 @@
         </div>
       </section>
     </main>
-    <footer><div class="brand"><span class="brand-mark">TM</span><span>SwissTravelMemory</span></div><p>Prototype V1 testable — aucune photo n'est envoyée vers un serveur dans cette démo.</p></footer>
+    <footer><div class="brand"><span class="brand-mark swiss-flag" aria-hidden="true"><span class="cross-h"></span><span class="cross-v"></span></span><span class="brand-name">SwissTravelMemory</span></div><p>Prototype V1 testable — aucune photo n'est envoyée vers un serveur dans cette démo.</p></footer>
   </div>
 
   <div id="app" class="app hidden" aria-hidden="true">
     <header class="app-topbar">
-      <button id="backSite" class="brand brand-button" type="button"><span class="brand-mark">TM</span><span>SwissTravelMemory</span></button>
+      <button id="backSite" class="brand brand-button" type="button"><span class="brand-mark swiss-flag" aria-hidden="true"><span class="cross-h"></span><span class="cross-v"></span></span><span class="brand-name">SwissTravelMemory</span></button>
       <div class="app-top-actions"><span class="cloud-indicator">● Démo locale</span><select id="lang" aria-label="Langue"><option value="fr">FR</option><option value="en">EN</option><option value="de">DE</option></select><button class="avatar" id="accountBtn" type="button" aria-label="Compte">JD</button></div>
     </header>
     <div class="app-layout">
