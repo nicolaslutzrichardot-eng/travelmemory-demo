@@ -238,4 +238,23 @@
   function saveTrips(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(trips));}catch(_){}}
   function val(id){return document.getElementById(id).value.trim();}
   function esc(s=''){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+
+  const nativeScanBtn=document.getElementById("simulateNativeScan");
+  if(nativeScanBtn){
+    nativeScanBtn.addEventListener("click",()=>{
+      const nativeTrips=[
+        {id:"native-jp",emoji:"🇯🇵",name:"Japon · Printemps 2025",country:"Japon",city:"Tokyo · Kyoto · Osaka",start:"2025-04-12",end:"2025-04-27",photos:684,gpsCount:612,status:"active",lat:35.6762,lng:139.6503},
+        {id:"native-it",emoji:"🇮🇹",name:"Italie · Mai 2024",country:"Italie",city:"Rome · Florence",start:"2024-05-08",end:"2024-05-15",photos:328,gpsCount:291,status:"active",lat:41.9028,lng:12.4964},
+        {id:"native-us",emoji:"🇺🇸",name:"New York · Septembre 2025",country:"États-Unis",city:"New York",start:"2025-09-08",end:"2025-09-13",photos:216,gpsCount:198,status:"active",lat:40.7128,lng:-74.0060}
+      ];
+      detectedTrips=nativeTrips;
+      const status=document.getElementById("importStatus");
+      if(status) status.innerHTML="📱 <b>Simulation mobile terminée :</b> 3 voyages retrouvés à partir des dates et positions de la photothèque autorisée.";
+      const diag=document.getElementById("gpsDiagnosticText");
+      if(diag) diag.textContent="1 228 médias analysés localement · 1 228 avec date · 1 101 avec position exploitable.";
+      renderDetectedTrips();
+      document.getElementById("detectedSuggestions")?.scrollIntoView({behavior:"smooth",block:"start"});
+    });
+  }
+
 })();

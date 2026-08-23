@@ -74,3 +74,12 @@ Les cartes de voyages détectés affichent maintenant explicitement le lieu, les
 - Si Safari/iOS ne fournit pas le GPS dans le fichier choisi, TravelMemory l'indique clairement au lieu d'inventer un lieu.
 
 Important : certaines photos exportées depuis iOS/Google Photos peuvent ne plus contenir les coordonnées GPS selon les réglages de partage ou de confidentialité.
+
+
+## V1.2 — parcours mobile natif
+La démo distingue maintenant clairement :
+- Web : analyse uniquement des fichiers explicitement sélectionnés, avec GPS seulement s'il est transmis par le navigateur.
+- iOS/Android : futur parcours natif avec autorisation de photothèque, analyse locale date + position, regroupement et validation avant création.
+- Un bouton « Simuler l’analyse iPhone / Android » permet de tester dès maintenant l’expérience finale sans prétendre que Safari donne accès à toute la photothèque.
+
+La vraie analyse iOS nécessitera une application signée utilisant PhotoKit et une distribution de test (Xcode/TestFlight). Android utilisera les API/permissions adaptées à la version du système.

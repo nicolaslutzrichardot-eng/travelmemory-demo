@@ -112,6 +112,21 @@
           </div>
           <div class="import-layout"><div class="upload-card"><div class="upload-icon" id="uploadIcon">📷</div><h3 id="uploadTitle">Choisir des photos</h3><p id="uploadText">TravelMemory ne parcourt jamais votre appareil sans votre action.</p><label class="file-button" id="fileButton">Sélectionner mes photos<input id="photoInput" type="file" accept="image/*" multiple hidden></label><button id="demoTripsBtn" class="google-demo" type="button">▶ Tester avec des voyages de démonstration</button><button id="googleDemoBtn" class="google-demo hidden" type="button">Connecter Google Photos — démo</button><label class="checkline"><input id="cloudConsent" type="checkbox"> J'autoriserais la sauvegarde cloud de ces fichiers</label><div id="importStatus" class="notice">Aucune photo sélectionnée.</div>
 
+
+<div class="native-mobile-panel">
+  <div class="native-mobile-icon">📱</div>
+  <div class="native-mobile-copy">
+    <span class="eyebrow">Détection automatique sur mobile</span>
+    <h3>Retrouver mes voyages depuis ma photothèque</h3>
+    <p>Sur iPhone et Android, TravelMemory utilisera l’accès autorisé à la photothèque pour lire localement les dates et positions disponibles, puis proposer automatiquement les voyages à créer.</p>
+    <div class="native-mobile-steps">
+      <span>1. Autoriser</span><span>2. Analyser</span><span>3. Vérifier</span><span>4. Créer</span>
+    </div>
+    <button id="simulateNativeScan" type="button">Simuler l’analyse iPhone / Android</button>
+    <small>Dans cette démo Web, Safari peut retirer le GPS lors de la sélection. La version mobile native n’utilisera pas ce transfert Web pour analyser la photothèque.</small>
+  </div>
+</div>
+
 <div class="import-diagnostic" id="gpsDiagnostic">
   <strong>Diagnostic GPS</strong>
   <span id="gpsDiagnosticText">Sélectionnez des photos pour vérifier si leurs coordonnées GPS sont accessibles.</span>
