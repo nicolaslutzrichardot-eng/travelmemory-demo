@@ -65,3 +65,12 @@ Cette version ajoute le parcours testable **Photothèque → analyse dates/GPS �
 
 ## V1.1.1 correction
 Les cartes de voyages détectés affichent maintenant explicitement le lieu, les villes/étapes, les dates de début/fin et le nombre de jours. Si le GPS manque, TravelMemory l'indique clairement au lieu d'inventer un lieu.
+
+
+## V1.1.2 — GPS et lieux
+- Lecture EXIF renforcée avec exifr.
+- Diagnostic visible : nombre de photos avec date et nombre de photos avec GPS accessible.
+- Conversion latitude/longitude en ville/pays via OpenStreetMap Nominatim lorsque le GPS est disponible.
+- Si Safari/iOS ne fournit pas le GPS dans le fichier choisi, TravelMemory l'indique clairement au lieu d'inventer un lieu.
+
+Important : certaines photos exportées depuis iOS/Google Photos peuvent ne plus contenir les coordonnées GPS selon les réglages de partage ou de confidentialité.

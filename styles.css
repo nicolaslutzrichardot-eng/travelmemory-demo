@@ -20,3 +20,8 @@
 
 /* V1.1.1 — lieu et dates rendus explicites */
 .detected-facts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 12px}.detected-facts>div{background:#f4f7f5;border:1px solid var(--line);border-radius:14px;padding:12px}.detected-facts small{display:block;font-size:8px;letter-spacing:.11em;font-weight:850;color:var(--brand);margin-bottom:5px}.detected-facts strong{display:block;font-size:13px;color:var(--ink);margin-bottom:3px}.detected-facts span{display:block;font-size:11px;color:var(--muted)}.metadata-warning{font-size:10px;line-height:1.45;background:#fff8e8;border:1px solid #ead9a6;border-radius:11px;padding:9px 10px;margin:-2px 0 12px;color:#675a31}@media(max-width:720px){.detected-facts{grid-template-columns:1fr}}
+
+/* V1.1.2 — diagnostic GPS et géocodage */
+.import-diagnostic{margin:12px 0;padding:12px 14px;border-radius:14px;background:#f4f7f5;border:1px solid var(--line);display:flex;flex-direction:column;gap:4px}
+.import-diagnostic strong{font-size:12px;color:var(--ink)}
+.import-diagnostic span{font-size:11px;line-height:1.45;color:var(--muted)}
