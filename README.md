@@ -87,3 +87,7 @@ La vraie analyse iOS nécessitera une application signée utilisant PhotoKit et 
 
 ## V1.3.1
 Correction de la page d’accueil : drapeau suisse visible dans le logo, palette rouge, nom SwissTravelMemory non masqué et carte repositionnée sans chevauchement.
+
+
+## V1.4 Premium
+Nouvelle page d’accueil premium, identité suisse renforcée et communication explicite RGPD + LPD suisse. Une note précise que la conformité juridique définitive dépendra de la mise en production réelle.
