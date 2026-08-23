@@ -533,4 +533,53 @@
     if(status) status.textContent=`Dernier voyage reçu : ${trip.city||trip.country||trip.title}`;
   });
 
+
+  async function loadLocalMacBridgeTrips(){
+    try{
+      const response=await fetch("/api/trips",{cache:"no-store"});
+      if(!response.ok) throw new Error(`HTTP ${response.status}`);
+      const payload=await response.json();
+      const trips=Array.isArray(payload.trips)?payload.trips:[];
+      window.deviceSyncedTrips=trips.map(t=>({
+        id:t.id,
+        name:t.title,
+        title:t.title,
+        city:t.city,
+        country:t.country,
+        start:t.start,
+        end:t.end,
+        latitude:t.latitude,
+        longitude:t.longitude,
+        lat:t.latitude,
+        lng:t.longitude,
+        photos:t.photoCount||0,
+        source:"SwissTravelMemory Mac · PhotoKit",
+        syncStatus:"local-live",
+        previewPhotos:[]
+      }));
+      const status=document.querySelector(".device-sync-status strong");
+      if(status) status.textContent=`Pont Mac connecté · ${window.deviceSyncedTrips.length} voyage(s) reçu(s)`;
+      window.dispatchEvent(new CustomEvent("swisstravelmemory:local-bridge-loaded"));
+      return window.deviceSyncedTrips;
+    }catch(err){
+      console.warn("Pont Mac indisponible",err);
+      const status=document.querySelector(".device-sync-status strong");
+      if(status) status.textContent="Pont Mac non connecté";
+      return [];
+    }
+  }
+
+  async function refreshLocalMacBridge(){
+    const trips=await loadLocalMacBridgeTrips();
+    if(trips.length && window.SwissTravelMemoryOpenTripFromMap){
+      // Affiche automatiquement le premier voyage reçu pour confirmer la connexion.
+      window.SwissTravelMemoryOpenTripFromMap(trips[0]);
+    }
+  }
+
+  if(location.hostname==="127.0.0.1" || location.hostname==="localhost"){
+    refreshLocalMacBridge();
+    setInterval(loadLocalMacBridgeTrips,5000);
+  }
+
 })();
